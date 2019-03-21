@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title> 1st React App </title>
+    <meta charset="utf-8">
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"> </script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.0/react-router-dom.js"></script>
+</head>
+
+<body>
+
+    <div id="react1"> </div>
+    <div id="react2"> </div>
+    <div id="react3"> </div>
+
+<script type="text/babel">
+'use strict'
+
+const Router = ReactRouterDOM.BrowserRouter;
+const HashRouter = ReactRouterDOM.HashRouter;
+const Route = ReactRouterDOM.Route;
+const Switch = ReactRouterDOM.Switch;
+const Link = ReactRouterDOM.Link;
+const NavLink = ReactRouterDOM.NavLink;
+const Redirect = ReactRouterDOM.Redirect;
+
+
+const userList = [
+{id: 123, login: 'Basil'},
+{id: 25466, login: 'Petre'},
+{id: 76, login: 'Ann'},
+{id: 1523, login: 'Kate'},
+{id: 44, login: 'Janet'}
+];
+
+class HomePage extends React.Component{
+
+render(){
+     return (
+         <div>
+             <h2> Home Page ! </h2>
+         </div>
+     );
+ }
+}
+
+class About extends React.Component{
+render(){
+     return (
+         <div>
+             <h2> Information! </h2>
+         </div>
+     );
+ }
+}
+class Page404 extends React.Component{
+render(){
+     return (
+         <div>
+             <h2 style={{backgroundColor:'yellow'}}> Page no found !!! </h2>
+         </div>
+     );
+ }
+}
+
+class User extends React.Component{
+render(){
+
+     console.log(this.props.match);
+     console.log(this.props.location);
+     const id = this.props.match.params.id;
+     return (
+         <div>
+         <UserList />   
+         <div style={{backgroundColor:'lightgray'}}>
+             <h2> UserId : {id} </h2>
+             <h2> UserName : {userList.find(x => x.id==id).login} </h2>
+         </div>
+         </div>
+     );
+ }
+}
+
+
+class UserList  extends React.Component{
+render(){
+     //console.log(userList);
+     return <div style={{color:'green'}}>
+            <ul>
+            {
+              userList.map( (user) => {
+                  return <li key={user.id}> 
+                    <NavLink to={`/users/${user.id}`}> {user.login} </NavLink>
+                    </li>
+              })
+            }
+            </ul>
+            </div>
+     ;
+ }
+}
+
+
+class Users extends React.Component{
+render(){
+    //  console.log(userList);
+     return <div>
+            <ul>
+            {
+              userList.map( (user) => {
+                  return <li key={user.id}> 
+                    <NavLink to={`/users/${user.id}`}> {user.login} </NavLink>
+                    </li>
+              })
+            }
+            </ul>
+            </div>
+     ;
+ }
+}
+
+class Users2 extends React.Component{
+render(){
+     return <UserList/>;
+ }
+}
+
+
+class Menu extends React.Component{
+render(){
+     return (
+         <nav>
+            <Link style={{margin:'5px'}} to="/"> Главная </Link>
+            <Link style={{margin:'5px'}} to="/about"> О сайте </Link>
+            <Link style={{margin:'5px'}} to="/users"> Пользователи </Link>
+         </nav>   
+     );
+ }
+}
+
+class App extends React.Component
+{
+ render(){
+     return (
+         <div>
+             <h2> Router App</h2>
+              <Router>
+                <Menu/>
+                <Switch> 
+                  <Route  exact path="/" component={HomePage}/>
+                  <Route  path="/about" component={About}/>
+                  <Route  exact path="/users" component={Users2}/>
+                  <Redirect from="/customers" to="/users" />
+                  <Route  path="/users/:id/" component={User}/>
+                  <Route  component={Page404} />
+                </Switch>
+             </Router>  
+         </div>
+     );
+ }
+
+}
+
+
+
+ReactDOM.render(<App/>,document.getElementById('react2'));
+
+</script>
+
+</body>
+
+</html>
